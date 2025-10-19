@@ -82,3 +82,22 @@ TextStyle mTextStyle22Bold({
     fontWeight: FontWeight.bold,
   );
 }*/
+
+TextStyle snTextStyle25({
+  Color? color,
+  FontWeight? fontWeight,
+}) => TextStyle(
+  fontSize: 25,
+  fontWeight: fontWeight ?? FontWeight.normal,
+  color: color ,
+);
+
+TextStyle snTextStyle25Bold ({
+  Color? color,
+  FontWeight? fontWeight,
+}) {
+  return TextStyle(
+      fontSize: 25,
+      fontWeight: fontWeight ?? FontWeight.bold,
+      color: color
+  );}

@@ -20,8 +20,6 @@ class AddPage extends StatefulWidget {
 }
 
 class _AddPageState extends State<AddPage> {
-
-
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController authorCtrl = TextEditingController();
   final TextEditingController descCtrl = TextEditingController();
@@ -50,8 +48,6 @@ class _AddPageState extends State<AddPage> {
   ];
 
   List<MultiSelectModel> selectedShopName = [];
-
-   // List<DropdownItem<String>> selectedShopName = [];
 
   File? _selectedImage;
   Uint8List? _webImage;
@@ -96,14 +92,15 @@ class _AddPageState extends State<AddPage> {
     }
   }
 
-  /// Image uploader widget (drag & drop + gallery upload)
-  Widget _buildImageUploader() {
+  /// Image uploader widget
+  Widget _buildImageUploader(double size) {
+    final color = Theme.of(context).colorScheme.surfaceVariant;
     return Card(
       elevation: 4,
       child: Container(
-        height: 300,
-        width: 300,
-        color: Colors.grey[200],
+        height: size,
+        width: size,
+        color: color,
         child: Stack(
           children: [
             if (kIsWeb)
@@ -166,7 +163,6 @@ class _AddPageState extends State<AddPage> {
     );
   }
 
-  /// Final price calculation
   String get finalPrice {
     double mrp = double.tryParse(mrpCtrl.text) ?? 0;
     double discount = double.tryParse(discountCtrl.text) ?? 0;
@@ -176,248 +172,246 @@ class _AddPageState extends State<AddPage> {
 
   @override
   Widget build(BuildContext context) {
+    final shopDropDown =
+    shopName.map((shop) => MultiSelectItem(shop, shop.name)).toList();
+    final isWide = MediaQuery.of(context).size.width > 900;
+    final orientation = MediaQuery.of(context).orientation;
 
-    final shopDropDown = shopName.map((shop) => MultiSelectItem(shop, shop.name)).toList();
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Page"), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AppBar(title: const Text("Add Book"), centerTitle: true),
+      body: Container(
+        color: Theme.of(context).colorScheme.background,
+        padding: const EdgeInsets.all(12),
+        child: isWide && orientation == Orientation.landscape
+            ? Row(
           children: [
-
-            /// Left Side Form
+            /// LEFT — scrollable form
             Expanded(
+              flex: 3,
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _buildImageUploader(),
-                    const SizedBox(height: 10),
-
-                    /// Book Info
-                    Card(
-                      elevation: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            snTextField(
-                              hint: "Book Name",
-                              label: "Book Name",
-                              controller: nameCtrl,
-                              onChanged: (_) => setState(() {}),
-                            ),
-                            const SizedBox(height: 10),
-                            snTextField(
-                              hint: "Author Name",
-                              label: "Author Name",
-                              controller: authorCtrl,
-                              onChanged: (_) => setState(() {}),
-                            ),
-                            const SizedBox(height: 10),
-                            snTextField(
-                              hint: "Description",
-                              label: "Description",
-                              controller: descCtrl,
-                              maxLines: 3,
-                              onChanged: (_) => setState(() {}),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    /// Dropdowns
-                    Card(
-                      elevation: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: SnDropdown(
-                                items: st,
-                                value: selectedST,
-                                hintText: "Book Type",
-                                onChanged: (value) =>
-                                    setState(() => selectedST = value),
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            Expanded(
-                              child: SnDropdown(
-                                items: brandList,
-                                value: selectedBrand,
-                                hintText: "Brand",
-                                onChanged: (value) =>
-                                    setState(() => selectedBrand = value),
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            Expanded(
-                              child: SnDropdown(
-                                items: classList,
-                                value: selectedClass,
-                                hintText: "Class",
-                                onChanged: (value) =>
-                                    setState(() => selectedClass = value),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    /// Price Section
-                    Card(
-                      elevation: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: snTextField(
-                                hint: "MRP",
-                                label: "MRP",
-                                controller: mrpCtrl,
-                                keyboardType: TextInputType.number,
-                                onChanged: (_) => setState(() {}),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: snTextField(
-                                hint: "Discount",
-                                label: "Discount",
-                                controller: discountCtrl,
-                                keyboardType: TextInputType.number,
-                                onChanged: (_) => setState(() {}),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-
-                            Expanded(
-                              child: snTextField(
-                                hint: "Quantity",
-                                label: "Quantity",
-                                keyboardType: TextInputType.number,
-                                controller: quantityCtrl,
-                                onChanged: (_) => setState(() {}),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    Card(
-                      elevation: 5,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SnMultiSelectDropdown<MultiSelectModel>(
-                                  title: "Shop Name",
-                                  items: shopDropDown,
-                                  onConfirm: (value){
-                                    setState(() {
-                                      selectedShopName = value ;
-                                    });
-                                  }
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 100),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SnButton(text: "Save", onPressed: () {}),
-                        const SizedBox(width: 100),
-                        SnButton(text: "Cancel", onPressed: () {}),
-                      ],
-                    ),
-                    const SizedBox(height: 100),
-                  ],
-                ),
+                padding: const EdgeInsets.only(right: 12),
+                child: _buildForm(shopDropDown),
               ),
             ),
 
-            /// Right Side Preview
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 5,
-                child: Container(
-                  width: 250,
-                  height: 600,
-                  padding: const EdgeInsets.all(12),
+            /// RIGHT — fixed preview
+            Container(
+              width: MediaQuery.of(context).size.width * 0.35,
+              child: _buildPreviewCard(),
+            ),
+          ],
+        )
+            : SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildForm(shopDropDown),
+              const SizedBox(height: 20),
+              _buildPreviewCard(), // portrait: below form
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildForm(List<MultiSelectItem<MultiSelectModel>> shopDropDown) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildImageUploader(250),
+        const SizedBox(height: 10),
+        _buildBookInfoCard(),
+        const SizedBox(height: 10),
+        _buildDropdowns(),
+        const SizedBox(height: 10),
+        _buildPriceCard(),
+        const SizedBox(height: 10),
+        _buildShopSelect(shopDropDown),
+        const SizedBox(height: 40),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SnButton(text: "Save", onPressed: () {}),
+            const SizedBox(width: 40),
+            SnButton(text: "Cancel", onPressed: () {}),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBookInfoCard() {
+    return Card(
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            snTextField(
+              hint: "Book Name",
+              label: "Book Name",
+              controller: nameCtrl,
+              onChanged: (_) => setState(() {}),
+            ),
+            const SizedBox(height: 10),
+            snTextField(
+              hint: "Author Name",
+              label: "Author Name",
+              controller: authorCtrl,
+              onChanged: (_) => setState(() {}),
+            ),
+            const SizedBox(height: 10),
+            snTextField(
+              hint: "Description",
+              label: "Description",
+              controller: descCtrl,
+              maxLines: 3,
+              onChanged: (_) => setState(() {}),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdowns() {
+    return Card(
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            SnDropdown(
+              items: st,
+              value: selectedST,
+              hintText: "Book Type",
+              onChanged: (v) => setState(() => selectedST = v),
+            ),
+            SnDropdown(
+              items: brandList,
+              value: selectedBrand,
+              hintText: "Brand",
+              onChanged: (v) => setState(() => selectedBrand = v),
+            ),
+            SnDropdown(
+              items: classList,
+              value: selectedClass,
+              hintText: "Class",
+              onChanged: (v) => setState(() => selectedClass = v),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPriceCard() {
+    return Card(
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            snTextField(
+              hint: "MRP",
+              label: "MRP",
+              controller: mrpCtrl,
+              keyboardType: TextInputType.number,
+              onChanged: (_) => setState(() {}),
+            ),
+            snTextField(
+              hint: "Discount",
+              label: "Discount",
+              controller: discountCtrl,
+              keyboardType: TextInputType.number,
+              onChanged: (_) => setState(() {}),
+            ),
+            snTextField(
+              hint: "Quantity",
+              label: "Quantity",
+              controller: quantityCtrl,
+              keyboardType: TextInputType.number,
+              onChanged: (_) => setState(() {}),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShopSelect(List<MultiSelectItem<MultiSelectModel>> items) {
+    return Card(
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SnMultiSelectDropdown<MultiSelectModel>(
+          title: "Shop Name",
+          items: items,
+          onConfirm: (value) {
+            setState(() {
+              selectedShopName = value;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPreviewCard() {
+    final textColor = Theme.of(context).colorScheme.onSurface;
+    return Card(
+      elevation: 5,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        width: 300,
+        height: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: _selectedImage != null
+                  ? Image.file(_selectedImage!, fit: BoxFit.cover)
+                  : _webImage != null
+                  ? Image.memory(_webImage!, fit: BoxFit.cover)
+                  : Container(
+                color: Colors.grey[800],
+                child:
+                const Center(child: Text("No Image Selected")),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              flex: 3,
+              child: SingleChildScrollView(
+                child: DefaultTextStyle(
+                  style: TextStyle(color: textColor),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        flex: 2,
-                        child: _selectedImage != null
-                            ? Image.file(
-                          _selectedImage!,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                        )
-                            : _webImage != null
-                            ? Image.memory(
-                          _webImage!,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                        )
-                            : Container(
-                          color: Colors.grey[200],
-                          child: const Center(
-                            child: Text("No Image Selected"),
-                          ),
-                        ),
+                      Text("📖 ${nameCtrl.text}"),
+                      Text("✍️ ${authorCtrl.text}"),
+                      Text("🏷 Brand: ${selectedBrand ?? "-"}"),
+                      Text("📚 Class: ${selectedClass ?? "-"}"),
+                      Text("📂 Type: ${selectedST ?? "-"}"),
+                      Text("💰 MRP: ${mrpCtrl.text}"),
+                      Text("💸 Discount: ${discountCtrl.text}"),
+                      Text("💰 Final Price: $finalPrice"),
+                      Text(
+                          "📦 Quantity: ${quantityCtrl.text.isEmpty ? "-" : quantityCtrl.text}"),
+                      Wrap(
+                        spacing: 4,
+                        runSpacing: 4,
+                        children: selectedShopName
+                            .map((shop) => Chip(label: Text(shop.name)))
+                            .toList(),
                       ),
-                      const SizedBox(height: 10),
-                      Expanded(
-                        flex: 3,
-                        child: SingleChildScrollView(
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("📖 ${nameCtrl.text}"),
-                                Text("✍️ ${authorCtrl.text}"),
-                                Text("🏷 ${selectedBrand ?? "-"}"),
-                                Text("📚 Class: ${selectedClass ?? "-"}"),
-                                Text("📂 Type: ${selectedST ?? "-"}"),
-                                Text("💰 MRP: ${mrpCtrl.text}"),
-                                Text("💸 Discount: ${discountCtrl.text}"),
-                                Text("💰 Final Price: $finalPrice"),
-                                Text("📦 Quantity: ${quantityCtrl.text.isEmpty
-                                    ? "-"
-                                    : quantityCtrl.text}"),
-                                Wrap(
-                                  spacing: 4,
-                                  runSpacing: 4,
-                                  children: selectedShopName.map((shop) =>
-                                      Chip(label: Text(shop.name),)).toList(),
-                                ),
-
-                                const SizedBox(height: 8),
-                                Text("📝 ${descCtrl.text}"),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      const SizedBox(height: 8),
+                      Text("📝 ${descCtrl.text}"),
                     ],
                   ),
                 ),

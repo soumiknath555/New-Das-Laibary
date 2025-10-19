@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:new_das_laybary/drawer/add_page.dart';
-import 'package:new_das_laybary/drawer/home_page.dart';
+import 'package:new_das_laybary/drawer/class_page.dart';
+import 'package:new_das_laybary/drawer/books_type.dart';
+import 'package:new_das_laybary/drawer/dashboard_page.dart';
+import 'package:new_das_laybary/drawer/publication_page.dart';
+import 'package:new_das_laybary/drawer/School_Name/school_name.dart';
 import 'package:new_das_laybary/drawer/setting_page.dart';
 import 'package:new_das_laybary/ui_helper/text_style.dart';
+import 'package:new_das_laybary/ui_helper/ui_colors.dart';
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({super.key});
@@ -12,11 +17,15 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
-  int selectedIndex = 1 ;
+  int selectedIndex = 4 ;
 
   List<Widget> drawerPage = [
-    HomePage(),
+    DashboardPage(),
     AddPage(),
+    Publication_Page(),
+    BooksType(),
+    ClassNamePage(),
+    SchoolNamePage(),
     SettingPage(),
   ] ;
 
@@ -43,22 +52,39 @@ class _DrawerPageState extends State<DrawerPage> {
         child: ListView(
           children: [
             DrawerHeader(
-              child: Text("New Das Laybary"),
-              decoration: BoxDecoration(color: Colors.blueAccent),
-
+              child: Text("New Das Laybary", style: snTextStyle20Bold(color: AppColors.WHITE_9),),
+              decoration: BoxDecoration(color: AppColors.BLACK_9),
             ),
             ListTile(
-              title: Text("Home Page"),
+              title: Text("Dashboard Page"),
               onTap: ()=> onItemTapped(0),
             ),
             ListTile(
               title: Text("Add Page"),
               onTap: ()=> onItemTapped(1),
             ),
+
+            ListTile(title: Text("Publication"),
+              onTap: () => onItemTapped(2),
+            ),
+
+            ListTile(title: Text("Books Type"),
+              onTap: () => onItemTapped(3),
+            ),
+
+            ListTile(
+              title: Text("Add Class"),
+              onTap: ()=> onItemTapped(4),
+            ),
+            ListTile(
+              title: Text("Add School Name"),
+              onTap: ()=> onItemTapped(5),
+            ),
             ListTile(
               title: Text("Setting Page"),
-              onTap: ()=> onItemTapped(2),
-            )
+              onTap: ()=> onItemTapped(16),
+            ),
+
           ],
         ),
       ),
