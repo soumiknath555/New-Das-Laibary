@@ -7,7 +7,7 @@ class SnDropdown extends StatelessWidget {
   final String hintText;
   final ValueChanged<String?> onChanged;
 
-   SnDropdown({
+  const SnDropdown({
     Key? key,
     required this.items,
     required this.value,
@@ -22,18 +22,38 @@ class SnDropdown extends StatelessWidget {
         isExpanded: true,
         hint: Text(
           hintText,
-          style: const TextStyle(fontSize: 14),
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.lightBlue,
+          ),
         ),
         value: value,
         items: items
-            .map((item) => DropdownMenuItem<String>(
-          value: item,
-          child: Text(
-            item,
-            style: const TextStyle(fontSize: 14),
+            .map(
+              (item) => DropdownMenuItem<String>(
+            value: item,
+            child: Text(
+              item,
+              style: const TextStyle(fontSize: 14, color: Colors.white),
+            ),
           ),
-        ))
+        )
             .toList(),
+        // 🔹 When an item is selected, it will appear white
+        selectedItemBuilder: (BuildContext context) {
+          return items.map((item) {
+            return Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                item,
+                style: const TextStyle(
+                  color: Colors.white, // ✅ Selected item color white
+                  fontSize: 14,
+                ),
+              ),
+            );
+          }).toList();
+        },
         onChanged: onChanged,
         buttonStyleData: ButtonStyleData(
           height: 50,
@@ -41,7 +61,7 @@ class SnDropdown extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.black45, // ✅ Outline border color
+              color: Colors.lightBlue, // ✅ Outline border color
               width: 1.5,
             ),
             borderRadius: BorderRadius.circular(8),

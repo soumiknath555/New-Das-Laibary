@@ -6,6 +6,7 @@ import 'package:new_das_laybary/drawer/dashboard_page.dart';
 import 'package:new_das_laybary/drawer/publication_page.dart';
 import 'package:new_das_laybary/drawer/School_Name/school_name.dart';
 import 'package:new_das_laybary/drawer/setting_page.dart';
+import 'package:new_das_laybary/drawer/shop_name.dart';
 import 'package:new_das_laybary/ui_helper/text_style.dart';
 import 'package:new_das_laybary/ui_helper/ui_colors.dart';
 
@@ -17,7 +18,7 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
-  int selectedIndex = 4 ;
+  int selectedIndex = 1 ;
 
   List<Widget> drawerPage = [
     DashboardPage(),
@@ -26,6 +27,7 @@ class _DrawerPageState extends State<DrawerPage> {
     BooksType(),
     ClassNamePage(),
     SchoolNamePage(),
+    ShopPage(),
     SettingPage(),
   ] ;
 
@@ -79,6 +81,10 @@ class _DrawerPageState extends State<DrawerPage> {
             ListTile(
               title: Text("Add School Name"),
               onTap: ()=> onItemTapped(5),
+            ),
+            ListTile(
+              title: Text("Add School Name"),
+              onTap: ()=> onItemTapped(6),
             ),
             ListTile(
               title: Text("Setting Page"),

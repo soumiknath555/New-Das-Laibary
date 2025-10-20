@@ -14,7 +14,8 @@ class _PublicationPageState extends State<Publication_Page> {
   final TextEditingController pubController = TextEditingController();
 
   // 🔥 Firestore collection
-  final CollectionReference publications = FirebaseFirestore.instance.collection('laybary').doc('test')
+  final CollectionReference publications = FirebaseFirestore.instance
+      .collection('laybary').doc('test')
       .collection('new_das_laybary')
       .doc('publication')
       .collection('items');

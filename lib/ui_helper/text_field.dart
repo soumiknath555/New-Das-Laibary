@@ -20,11 +20,20 @@ Widget snTextField({
       keyboardType: keyboardType,
       maxLines: maxLines,
       onChanged: onChanged,
+      style: const TextStyle(
+        color: Colors.white, // 🔸 Text color white
+      ),
       decoration: InputDecoration(
         hintText: hint,
         labelText: label,
+        hintStyle: const TextStyle(
+          color: Colors.lightBlue, // 🔹 Hint color light blue
+        ),
+        labelStyle: const TextStyle(
+          color: Colors.lightBlue, // 🔹 Label color light blue
+        ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: color ?? Colors.black45),
+          borderSide: BorderSide(color: color ?? Colors.white60),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: color ?? Colors.lightBlue),
